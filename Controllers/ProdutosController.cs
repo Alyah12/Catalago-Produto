@@ -1,4 +1,5 @@
-﻿using APICatalago.Context;
+﻿using System.Collections;
+using APICatalago.Context;
 using APICatalago.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +16,15 @@ public class ProdutosController : ControllerBase
     {
         _context = context;
     }
-
-    public IEnumerable<Produto> Get()
+ 
+    [HttpGet]      
+    public ActionResult<IEnumerable<Produto>> Get()
     {
         var produtos = _context.Produtos.ToList();
+        if (produtos is null)
+        {
+            return NotFound("Produto não encontrado...");
+        }
         return produtos;
     }
 }

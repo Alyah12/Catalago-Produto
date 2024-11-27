@@ -13,6 +13,7 @@
         "packagesPath": "C:\\Users\\heber\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\heber\\RiderProjects\\APICatalago\\APICatalago\\obj\\",
         "projectStyle": "PackageReference",
+        "UsingMicrosoftNETSdk": false,
         "configFilePaths": [
           "C:\\Users\\heber\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
