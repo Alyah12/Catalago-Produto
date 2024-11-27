@@ -1,4 +1,5 @@
-﻿using APICatalago.Models;
+﻿using APICatalago.Context;
+using APICatalago.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,9 +10,8 @@ namespace APICatalago.Controllers;
 
 public class ProdutosController : ControllerBase
 {
-    private readonly DbContextOptions _context;
-
-    public ProdutosController(DbContextOptions context)
+    private readonly AppDbContext _context;
+    public ProdutosController(AppDbContext context)
     {
         _context = context;
     }
