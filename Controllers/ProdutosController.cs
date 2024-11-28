@@ -28,7 +28,7 @@ public class ProdutosController : ControllerBase
         return produtos;
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int}", Name = "ObterProduto")]
     public ActionResult<Produto> Get(int id)
     {
         var produto = _context.Produtos.FirstOrDefault(x => x.ProdutoId == id);
@@ -37,5 +37,18 @@ public class ProdutosController : ControllerBase
             return NotFound();
         }
         return produto;
+    }
+
+    [HttpPost]
+    public ActionResult<Produto> Post(Produto produto)
+    {
+        if (produto is null)
+        {
+            BadRequest();
+        }
+        _context.Produtos.Add(produto);
+        _context.SaveChanges();
+        
+        return new CreatedAtRouteResult("ObterProduto",new { id = produto.ProdutoId }, produto);
     }
 }
