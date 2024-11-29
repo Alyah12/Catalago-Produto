@@ -65,4 +65,18 @@ public class ProdutosController : ControllerBase
 
         return Ok(produto);
     }
+
+    public ActionResult<Produto> Delete(int id)
+    {
+        var produto = _context.Produtos.FirstOrDefault(x => x.ProdutoId == id);
+    
+        if (produto is null)
+        {
+            return NotFound();
+        }
+        _context.Produtos.Remove(produto);
+        _context.SaveChanges();
+        
+        return Ok(produto); 
+    }
 }
