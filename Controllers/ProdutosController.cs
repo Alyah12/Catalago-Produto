@@ -66,9 +66,10 @@ public class ProdutosController : ControllerBase
         return Ok(produto);
     }
 
+    [HttpDelete("{id:int}")]
     public ActionResult<Produto> Delete(int id)
     {
-        var produto = _context.Produtos.FirstOrDefault(x => x.ProdutoId == id);
+       var produto = _context.Produtos.FirstOrDefault(x => x.ProdutoId == id);
     
         if (produto is null)
         {
