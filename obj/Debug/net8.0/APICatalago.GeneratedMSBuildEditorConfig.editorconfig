@@ -17,3 +17,7 @@ build_property.SupportLocalizedComponentNames =
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
 build_property.MSBuildProjectDirectory = C:\Users\heber\RiderProjects\APICatalago\APICatalago
 build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/heber/RiderProjects/APICatalago/APICatalago/Views/Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

@@ -142,3 +142,5 @@ C:\Users\heber\RiderProjects\APICatalago\APICatalago\bin\Debug\net8.0\Microsoft.
 C:\Users\heber\RiderProjects\APICatalago\APICatalago\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\heber\RiderProjects\APICatalago\APICatalago\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 C:\Users\heber\RiderProjects\APICatalago\APICatalago\bin\Debug\net8.0\System.ClientModel.dll
+C:\Users\heber\RiderProjects\APICatalago\APICatalago\obj\Debug\net8.0\APICatalago.RazorAssemblyInfo.cache
+C:\Users\heber\RiderProjects\APICatalago\APICatalago\obj\Debug\net8.0\APICatalago.RazorAssemblyInfo.cs
