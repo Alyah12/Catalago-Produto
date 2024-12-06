@@ -17,21 +17,38 @@ public class CategoriasController : ControllerBase
         _context = context;
     }
 
-    [HttpGet]
-    public async Task <ActionResult<IEnumerable<Categoria>>> Get()
+    [HttpGet("produtos")]
+    public async Task <ActionResult<IEnumerable<Categoria>>> GetCategoriasProdutos()
     {
-        var produto = _context.Categorias.ToListAsync();
-        return await produto;
+        return await _context.Categorias.Include(p => p.Produtos).ToListAsync();
     }
-
-    [HttpGet("{id}")]
-    public ActionResult<CategoriaDto> Get(int id)
+    
+    
+    [HttpGet("categorias")]
+    public async Task <ActionResult<IEnumerable<CategoriaDto>>> Get(int pageNumber = 1, int pageSize = 10)
     {
-        var categoria = _context.Categorias.Where(c => c.CategoriaId == id).Select( x =>new CategoriaDto()
+        var categoria = await _context.Categorias
+            .Select( x => new CategoriaDto()
         {
             CategoriaId = x.CategoriaId,
             Nome = x.Nome
-        }).FirstOrDefault();
+        })
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+      
+        
+        return Ok(categoria);
+    }
+
+    [HttpGet("{id}")]
+    public async Task <ActionResult<CategoriaDto>> GetById(int id)
+    {
+        var categoria = await _context.Categorias.Where(c => c.CategoriaId == id).Select( x =>new CategoriaDto()
+        {
+            CategoriaId = x.CategoriaId,
+            Nome = x.Nome
+        }).FirstOrDefaultAsync();
 
         if (categoria is null)
         {

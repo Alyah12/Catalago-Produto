@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using APICatalago.Context;
+﻿using APICatalago.Context;
 using APICatalago.Dtos;
 using APICatalago.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -21,12 +20,12 @@ public class ProdutosController : ControllerBase
     [HttpGet]      
     public ActionResult<IEnumerable<Produto>> Get()
     {
-        var produtos = _context.Produtos.ToList();
+        var produtos = _context.Produtos.ToListAsync();
         if (produtos is null)
         {
             return NotFound("Produto não encontrado...");
         }
-        return produtos;
+        return Ok(produtos);
     }
 
     [HttpGet("{id:int}", Name = "ObterProduto")]
