@@ -18,9 +18,9 @@ public class ProdutosController : ControllerBase
     }
  
     [HttpGet]      
-    public ActionResult<IEnumerable<Produto>> Get()
+    public async Task <ActionResult<IEnumerable<Produto>>> Get()
     {
-        var produtos = _context.Produtos.ToListAsync();
+        var produtos = await _context.Produtos.Take(5).Where(c => c.ProdutoId <= 5).ToListAsync();
         if (produtos is null)
         {
             return NotFound("Produto não encontrado...");
@@ -29,14 +29,14 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpGet("{id:int}", Name = "ObterProduto")]
-    public ActionResult<ProdutoDto> Get(int id)
+    public async Task <ActionResult<ProdutoDto>> Get(int id)
     {
-        var produto = _context.Produtos?.Where(x => x.ProdutoId == id).Select(x => new ProdutoDto
+        var produto = await _context.Produtos.Where(x => x.ProdutoId == id).Select(x => new ProdutoDto
         {
             ProdutoId = x.ProdutoId,
             Descricao = x.Descricao,
             Preco = x.Preco
-        }).FirstOrDefault();
+        }).FirstOrDefaultAsync();
         
         if (produto is null)
         {

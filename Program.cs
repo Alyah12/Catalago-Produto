@@ -1,8 +1,7 @@
-using System.Security.Cryptography.Xml;
+
 using System.Text.Json.Serialization;
 using APICatalago.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
