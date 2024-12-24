@@ -1,5 +1,6 @@
 ﻿using APICatalago.Context;
 using APICatalago.Dtos;
+using APICatalago.Migrations;
 using APICatalago.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,9 +19,13 @@ public class CategoriasController : ControllerBase
     }
 
     [HttpGet("produtos")]
-    public async Task <ActionResult<IEnumerable<Categoria>>> GetCategoriasProdutos()
+    public async Task <ActionResult<IEnumerable<CategoriaDto>>> GetCategoriasProdutos()
     {
-        return await _context.Categorias.Include(p => p.Produtos).ToListAsync();
+        return await _context?.Categorias.Include(p => p.Produtos).Where(c => c.CategoriaId <= 5).Take(5).Select(c => new CategoriaDto
+        {
+            CategoriaId = c.CategoriaId,
+            Nome = c.Nome,
+        }).AsNoTracking().ToListAsync();
     }
     
     
@@ -35,6 +40,7 @@ public class CategoriasController : ControllerBase
         })
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
+            .AsNoTracking()
             .ToListAsync();
       
         

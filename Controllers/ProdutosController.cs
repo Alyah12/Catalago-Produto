@@ -20,18 +20,25 @@ public class ProdutosController : ControllerBase
     [HttpGet]      
     public async Task <ActionResult<IEnumerable<Produto>>> Get()
     {
-        var produtos = await _context.Produtos.Take(5).Where(c => c.ProdutoId <= 5).ToListAsync();
-        if (produtos is null)
+        try
         {
-            return NotFound("Produto não encontrado...");
+            var produtos = await _context.Produtos.Take(5).Where(c => c.ProdutoId <= 5).ToListAsync();
+            if (produtos is null)
+            {
+                return NotFound("Produto não encontrado...");
+            }
+            return Ok(produtos);
         }
-        return Ok(produtos);
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar os produtos. Erro: {e.Message}");
+        }
     }
 
     [HttpGet("{id:int}", Name = "ObterProduto")]
     public async Task <ActionResult<ProdutoDto>> Get(int id)
     {
-        var produto = await _context.Produtos.Where(x => x.ProdutoId == id).Select(x => new ProdutoDto
+        var produto = await _context?.Produtos.Where(x => x.ProdutoId == id).Select(x => new ProdutoDto
         {
             ProdutoId = x.ProdutoId,
             Descricao = x.Descricao,
@@ -40,7 +47,7 @@ public class ProdutosController : ControllerBase
         
         if (produto is null)
         {
-            return NotFound();
+            return NotFound($"Não foi possível encontrar o produto com id {id}...");
         }
         return Ok(produto);
     }
@@ -50,7 +57,7 @@ public class ProdutosController : ControllerBase
     {
         if (produto is null || !ModelState.IsValid)
         {
-            BadRequest();
+            BadRequest("Produto inválido...");
         }
         await _context.Produtos.AddAsync(produto);
         await _context.SaveChangesAsync();
@@ -64,7 +71,7 @@ public class ProdutosController : ControllerBase
 
         if (id != produto.ProdutoId)
         {
-            return BadRequest();
+            return BadRequest("Produto não encontrado...");
         }
         _context.Entry(produto).State = EntityState.Modified;
         _context.SaveChanges();
@@ -79,7 +86,7 @@ public class ProdutosController : ControllerBase
     
         if (produto is null)
         {
-            return NotFound();
+            return NotFound("Produto não encontrado...");
         }
         _context.Produtos.Remove(produto);
         await _context.SaveChangesAsync();
