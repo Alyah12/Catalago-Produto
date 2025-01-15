@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace APICatalago.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 
 public class ProdutosController : ControllerBase
 {
@@ -18,10 +18,10 @@ public class ProdutosController : ControllerBase
     }
  
     [HttpGet]      
-    public async Task <ActionResult<IEnumerable<Produto>>> Get()
+    public async Task <ActionResult<IEnumerable<Produto>>> GetAll()
     {
         try
-        {
+        { 
             var produtos = await _context.Produtos.Take(5).Where(c => c.ProdutoId <= 5).ToListAsync();
             if (produtos is null)
             {
@@ -35,8 +35,8 @@ public class ProdutosController : ControllerBase
         }
     }
 
-    [HttpGet("{id:int}", Name = "ObterProduto")]
-    public async Task <ActionResult<ProdutoDto>> Get(int id)
+    [HttpGet("{id:int:min(1)}", Name = "ObterProduto")]
+    public async Task <ActionResult<ProdutoDto>> GetById (int id)
     {
         var produto = await _context?.Produtos.Where(x => x.ProdutoId == id).Select(x => new ProdutoDto
         {
@@ -65,7 +65,7 @@ public class ProdutosController : ControllerBase
         return  CreatedAtRoute("ObterProduto",new { id = produto.ProdutoId }, produto);
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:int:min(1)}")]
     public ActionResult<Produto> Put(int id, Produto produto)
     {
 
@@ -79,7 +79,7 @@ public class ProdutosController : ControllerBase
         return Ok(produto);
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:int:min(1)}")]
     public async Task <ActionResult<Produto>> Delete(int id)
     {
        var produto = await _context.Produtos.FindAsync(id);

@@ -1,6 +1,7 @@
 
 using System.Text.Json.Serialization;
 using APICatalago.Context;
+using APICatalago.Views;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -19,32 +19,55 @@ public class CategoriasController : ControllerBase
     }
 
     [HttpGet("produtos")]
-    public async Task <ActionResult<IEnumerable<CategoriaDto>>> GetCategoriasProdutos()
+    public async Task<ActionResult<IEnumerable<CategoriaDto>>> GetCategoriasProdutos()
     {
-        return await _context?.Categorias.Include(p => p.Produtos).Where(c => c.CategoriaId <= 5).Take(5).Select(c => new CategoriaDto
+        try
         {
-            CategoriaId = c.CategoriaId,
-            Nome = c.Nome,
-        }).AsNoTracking().ToListAsync();
+            var categoria = await _context?.Categorias.Include(p => p.Produtos).Where(c => c.CategoriaId <= 5).Take(5).Select(
+                c => new CategoriaDto
+                {
+                    CategoriaId = c.CategoriaId,
+                    Nome = c.Nome,
+                }).AsNoTracking().ToListAsync();
+            if (categoria is null)
+            {
+                return BadRequest();
+            }
+            
+            return categoria;
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter Categorias: {e.Message}");
+        }
     }
-    
-    
+
     [HttpGet("categorias")]
-    public async Task <ActionResult<IEnumerable<CategoriaDto>>> Get(int pageNumber = 1, int pageSize = 10)
+    public async Task <ActionResult<IEnumerable<CategoriaDto>>> GetAll (int pageNumber = 1, int pageSize = 10)
     {
-        var categoria = await _context.Categorias
-            .Select( x => new CategoriaDto()
+        try
         {
-            CategoriaId = x.CategoriaId,
-            Nome = x.Nome
-        })
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .AsNoTracking()
-            .ToListAsync();
-      
-        
-        return Ok(categoria);
+            var categoria = await _context.Categorias
+                .Select( x => new CategoriaDto()
+                {
+                    CategoriaId = x.CategoriaId,
+                    Nome = x.Nome
+                })
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync();
+
+            if (categoria is null)
+            {
+                return BadRequest("Vazio");
+            }
+            return Ok(categoria);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter Categorias: {e.Message}");
+        }
     }
 
     [HttpGet("{id}")]
