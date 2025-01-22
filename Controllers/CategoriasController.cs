@@ -9,7 +9,7 @@ namespace APICatalago.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CategoriasController : ControllerBase
+public class CategoriasController : Controller
 {
     public readonly AppDbContext _context;
 
@@ -57,10 +57,10 @@ public class CategoriasController : ControllerBase
                 .Take(pageSize)
                 .AsNoTracking()
                 .ToListAsync();
-
+            
             if (categoria is null)
             {
-                return BadRequest("Vazio");
+                return BadRequest();
             }
             return Ok(categoria);
         }

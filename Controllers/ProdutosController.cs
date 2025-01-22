@@ -37,13 +37,14 @@ public class ProdutosController : ControllerBase
 
     [HttpGet("{id:int:min(1)}", Name = "ObterProduto")]
     public async Task <ActionResult<ProdutoDto>> GetById (int id)
-    {
-        var produto = await _context?.Produtos.Where(x => x.ProdutoId == id).Select(x => new ProdutoDto
+    { 
+        var produto = await _context?.Produtos.Select(x => new ProdutoDto
         {
             ProdutoId = x.ProdutoId,
             Descricao = x.Descricao,
             Preco = x.Preco
-        }).FirstOrDefaultAsync();
+        }).Where(x => x.ProdutoId == id).
+            FirstOrDefaultAsync();
         
         if (produto is null)
         {
