@@ -1,6 +1,6 @@
 ﻿namespace APICatalago.Dtos;
 
-public class ProdutoDto
+public record ProdutoDto
 {
     public int ProdutoId { get; set; }
     public string Descricao { get; set; }

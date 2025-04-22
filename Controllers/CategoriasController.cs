@@ -23,12 +23,14 @@ public class CategoriasController : Controller
     {
         try
         {
-            var categoria = await _context?.Categorias.Include(p => p.Produtos).Where(c => c.CategoriaId <= 5).Take(5).Select(
+            var categoria = await _context?.Categorias.Include(p => p.Produtos)
+                .Where(c => c.CategoriaId <= 5).Take(5).Select(
                 c => new CategoriaDto
                 {
                     CategoriaId = c.CategoriaId,
                     Nome = c.Nome,
                 }).AsNoTracking().ToListAsync();
+
             if (categoria is null)
             {
                 return BadRequest();
@@ -57,7 +59,7 @@ public class CategoriasController : Controller
                 .Take(pageSize)
                 .AsNoTracking()
                 .ToListAsync();
-            
+ 
             if (categoria is null)
             {
                 return BadRequest();
@@ -71,7 +73,7 @@ public class CategoriasController : Controller
     }
 
     [HttpGet("{id}")]
-    public async Task <ActionResult<CategoriaDto>> GetById(int id)
+    public async Task <ActionResult<CategoriaDto>> GetByIdAsync(int id)
     {
         var categoria = await _context.Categorias.Where(c => c.CategoriaId == id).Select( x =>new CategoriaDto()
         {
@@ -87,7 +89,7 @@ public class CategoriasController : Controller
     }
 
     [HttpPost]
-    public async Task <ActionResult<CategoriaDto>> Post(Categoria categoria)
+    public async Task <ActionResult<CategoriaDto>> PostAsync(Categoria categoria)
     {
         if (categoria is null || !ModelState.IsValid)
         {
@@ -102,7 +104,7 @@ public class CategoriasController : Controller
     
     
     [HttpPut("{id}")]
-    public ActionResult<Categoria> Put(int id, Categoria categoria)
+    public ActionResult<Categoria> PutAsync(int id, Categoria categoria)
     {
         if (id != categoria.CategoriaId)
         {
@@ -115,7 +117,7 @@ public class CategoriasController : Controller
     }
 
     [HttpDelete("{id}")]
-    public async Task <ActionResult<Categoria>> Delete(int id)
+    public async Task <ActionResult<Categoria>> DeleteAsync(int id)
     {
         var categoria = await _context.Categorias.FindAsync(id);
 

@@ -1,0 +1,36 @@
+﻿@page "/product/{ProductId:int}"
+
+@using APICatalago.Models
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
+
+<h3>Product Details</h3>
+
+@if (produto != null)
+{
+    <div class="product-container">
+        <div class="product-image">
+            <img src="@produto.ImagemUrl" alt="@produto.Nome" class="img-fluid" />
+        </div>
+        <div class="product-details">
+            <h4>@produto.Nome</h4>
+            <p><strong>Description:</strong> @produto.Descricao</p>
+            <p><strong>Price:</strong> @produto.Preco.ToString("C")</p>
+        </div>
+    </div>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    [Parameter] public int ProductId { get; set; }
+    private Produto produto;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulando uma chamada API (você pode substituir isso por uma API real)
+        produto = await Http.GetFromJsonAsync<Produto>($"https://localhost:7033/api/produtos/{ProductId}");
+    }
+}
