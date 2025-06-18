@@ -45,7 +45,7 @@ public class ProdutosController : ControllerBase
             Preco = x.Preco
         }).Where(x => x.ProdutoId == id).
             FirstOrDefaultAsync();
-        
+
         if (produto is null)
         {
             return NotFound($"Não foi possível encontrar o produto com id {id}...");
@@ -54,7 +54,7 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpPost]
-    public async Task <ActionResult<ProdutoDto>> Post([FromBody] Produto produto)
+    public async Task <ActionResult<ProdutoDto>> PostAsync ([FromBody] Produto produto)
     {
         if (produto is null || !ModelState.IsValid)
         {
@@ -67,7 +67,7 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpPut("{id:int:min(1)}")]
-    public ActionResult<Produto> Put(int id, Produto produto)
+    public ActionResult<Produto> PutAsync (int id, Produto produto)
     {
 
         if (id != produto.ProdutoId)
@@ -81,17 +81,18 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpDelete("{id:int:min(1)}")]
-    public async Task <ActionResult<Produto>> Delete(int id)
+    public async Task <ActionResult<Produto>> DeleteAsync (int id)
     {
        var produto = await _context.Produtos.FindAsync(id);
     
         if (produto is null)
         {
-            return NotFound("Produto não encontrado...");
+         return NotFound("Produto não encontrado...");
         }
+
         _context.Produtos.Remove(produto);
         await _context.SaveChangesAsync();
         
-        return Ok(produto); 
+        return Ok(produto);
     }
 }
