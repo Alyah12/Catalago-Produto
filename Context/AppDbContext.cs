@@ -15,4 +15,5 @@ public class AppDbContext : DbContext
 
     public DbSet<Categoria>? Categorias { get; set; }
     public DbSet<Produto>? Produtos { get; set; }
+    public DbSet<Empresa> Empresas { get; set; }
 }

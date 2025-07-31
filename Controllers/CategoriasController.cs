@@ -17,7 +17,8 @@ public class CategoriasController : Controller
     {
         _context = context;
     }
-
+    // GET: /categorias/produtos
+    // Retorna as categorias com os produtos associados, limitando a 5 categorias.  
     [HttpGet("produtos")]
     public async Task<ActionResult<IEnumerable<CategoriaDto>>> GetCategoriasProdutos()
     {
@@ -43,7 +44,8 @@ public class CategoriasController : Controller
             return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter Categorias: {e.Message}");
         }
     }
-
+    // GET: Categorias
+    // Esse metodo retorna as categorias com paginação.
     [HttpGet("categorias")]
     public async Task <ActionResult<IEnumerable<CategoriaDto>>> GetAll (int pageNumber = 1, int pageSize = 10)
     {
@@ -71,7 +73,7 @@ public class CategoriasController : Controller
             return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter Categorias: {e.Message}");
         }
     }
-
+    // Busca categorias por ID
     [HttpGet("{id}")]
     public async Task <ActionResult<CategoriaDto>> GetByIdAsync(int id)
     {
@@ -87,11 +89,12 @@ public class CategoriasController : Controller
         }
         return Ok(categoria);
     }
-
+    // Adiciona uma nova categoria, caso ter sucesso retorna 200.
+    
     [HttpPost]
     public async Task <ActionResult<CategoriaDto>> PostAsync(Categoria categoria)
     {
-        try
+        try 
         {
             if (categoria is null || !ModelState.IsValid)
             {
@@ -103,10 +106,10 @@ public class CategoriasController : Controller
 
             return new CreatedAtRouteResult("ObterCategoria", new { id = categoria.CategoriaId }, categoria);
         }
-        catch (Exception e) when (e is DbUpdateException || e is DbUpdateConcurrencyException)
+        catch (Exception e) when (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
         {
             // Log the exception (not shown here for brevity)
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao inserir Categoria: {e.Message}");
+            System.Console.WriteLine("Hoje é sexta-feira, não é permitido inserir categorias.");
         }
         catch (Exception e)
         {
@@ -114,7 +117,7 @@ public class CategoriasController : Controller
         }
     }
     
-    
+    // Modifica uma determinada categoria pelo ID, salva e retorna 200.
     [HttpPut("{id}")]
     public ActionResult<Categoria> PutAsync(int id, Categoria categoria)
     {
