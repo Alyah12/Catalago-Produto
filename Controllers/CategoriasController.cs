@@ -91,15 +91,27 @@ public class CategoriasController : Controller
     [HttpPost]
     public async Task <ActionResult<CategoriaDto>> PostAsync(Categoria categoria)
     {
-        if (categoria is null || !ModelState.IsValid)
+        try
         {
-            BadRequest();
+            if (categoria is null || !ModelState.IsValid)
+            {
+                BadRequest();
+            }
+
+            await _context.Categorias.AddAsync(categoria);
+            await _context.SaveChangesAsync();
+
+            return new CreatedAtRouteResult("ObterCategoria", new { id = categoria.CategoriaId }, categoria);
         }
-        
-        await _context.Categorias.AddAsync(categoria);
-        await _context.SaveChangesAsync();
-        
-        return new CreatedAtRouteResult("ObterCategoria", new {id = categoria.CategoriaId}, categoria);
+        catch (Exception e) when (e is DbUpdateException || e is DbUpdateConcurrencyException)
+        {
+            // Log the exception (not shown here for brevity)
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao inserir Categoria: {e.Message}");
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao inserir Categoria: {e.Message}");
+        }
     }
     
     

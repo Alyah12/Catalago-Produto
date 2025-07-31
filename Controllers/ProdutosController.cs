@@ -21,7 +21,7 @@ public class ProdutosController : ControllerBase
     public async Task <ActionResult<IEnumerable<Produto>>> GetAll()
     {
         try
-        { 
+        {
             var produtos = await _context.Produtos.Take(5).Where(c => c.ProdutoId <= 5).ToListAsync();
             if (produtos is null)
             {
